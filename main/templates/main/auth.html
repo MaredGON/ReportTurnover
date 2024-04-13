@@ -1,0 +1,19 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block Head %}
+    <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
+    {% block Title %}
+    {% endblock %}
+{% endblock %}
+{% block Body %}
+    <div class="container">
+    <div class="login-box">
+        <h2>Авторизация</h2>
+            <div class="input-group">
+                <label for="key">KEY:</label>
+                <input type="text" id="key" name="key" placeholder="Введите ключ" required>
+            </div>
+            <button type="submit">Войти</button>
+        </div>
+    </div>
+{% endblock %}
