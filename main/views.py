@@ -5,4 +5,4 @@ def authorization(request: HttpRequest):
     return render(request, 'main/authorization.html')
 
 def button_laboratory(request: HttpRequest):
-    return render(request, 'main/butlab.html')
+    return render(request, 'main/lab_check.html')

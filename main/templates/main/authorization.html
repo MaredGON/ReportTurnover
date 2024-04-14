@@ -1,7 +1,7 @@
 {% extends 'main/layout.html' %}
-{% load static %}
 {% block Head %}
-    <link rel="stylesheet" href={% static "main/css/style1.css" %} />
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/style1.css'%}"/>
     {% block Title %}
         <title>Login Form</title>
     {% endblock %}
