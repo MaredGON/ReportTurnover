@@ -1,0 +1,8 @@
+{% extends 'main/layout.html' %}
+
+{% block Body %}
+  <h2>User list</h2>
+  {% for user in users %}
+      <p>{{ user.name }} - {{ user.role }}</p> <br>
+  {% endfor %}
+{% endblock %}

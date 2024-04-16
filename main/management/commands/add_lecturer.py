@@ -23,7 +23,6 @@ class Command(BaseCommand):
                                                                        surname=surname_value,
                                                                        surname2=surname2_value,
                                                                        key=key_value)
-
         if create_state:
             self.stdout.write(self.style.SUCCESS(f'Создан новый преподаватель: {lecturer_object.name} {lecturer_object.surname}'))
         else:

@@ -1,44 +1,76 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
+class SimpleBaseModel(models.Model):
+    creasted_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
-class Student(models.Model):
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    surname2 = models.CharField(max_length=100, null=True, blank=True)
-    chat = models.IntegerField(null=True, blank=True)
-    group = models.CharField(max_length=100, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-class Lecturer(models.Model):
-    username = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    surname2 = models.CharField(max_length=100, null=True, blank=True)
-    key = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-class Educational(models.Model):
-    title = models.TextField()
-    lecturer = models.ForeignKey(Lecturer, on_delete=models.PROTECT)
-
-
-class Laboratory(models.Model):
     class Meta:
-        ordering = ['educational_id', 'created_at']
+        abstract = True
 
+
+class EducationalGroup(SimpleBaseModel):
+    title = models.CharField(max_length=25)
+
+
+class CustomUser(AbstractUser):
+    ROLE_STUDENT = "Студент"
+    ROLE_LECTURER = "Преподаватель"
+    ROLE_TYPE = (
+        (ROLE_STUDENT, ROLE_STUDENT),
+        (ROLE_LECTURER, ROLE_LECTURER),
+    )
+
+    name = models.CharField(max_length=100, verbose_name="Имя", )
+    surname = models.CharField(max_length=100, verbose_name="Фамилия", )
+    patronymic = models.CharField(max_length=100, null=True, blank=True, verbose_name="Отчество", )
+    role = models.CharField(max_length=25, choices=ROLE_TYPE,  null=True, )
+
+    def __str__(self):
+        return self.username
+
+    def role_model(self):
+        from educational.models import Student, Lecturer
+
+        if self.role == self.ROLE_STUDENT:
+            return Student.objects.filter(user=self).first()
+        elif self.role == self.ROLE_LECTURER:
+            return Lecturer.objects.filter(user=self).first()
+        return
+
+
+class Student(SimpleBaseModel):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    group = models.ForeignKey(EducationalGroup, null=True, blank=True, on_delete=models.SET_NULL)
+    chat = models.IntegerField(null=True, blank=True)
+
+
+class Lecturer(SimpleBaseModel):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+
+class Subject(SimpleBaseModel):
+    title = models.CharField(max_length=50)
+
+class LecturerSubject(SimpleBaseModel):
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+
+class Laboratory(SimpleBaseModel):
     title = models.CharField(max_length=100)
-    educational = models.ForeignKey(Educational, on_delete=models.SET_NULL, null=True)
+    educational = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
     lecturer = models.ForeignKey(Lecturer, on_delete=models.PROTECT)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Laboratory_Status(models.Model):
-    lab = models.ForeignKey(Laboratory, on_delete=models.PROTECT)
-    student = models.ForeignKey(Student, on_delete=models.PROTECT)
-    viewed = models.BooleanField(default=False)
-    comment = models.TextField(null=True, blank=True)
-    status = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+class Laboratory_Status(SimpleBaseModel):
+    STATUS_ACCEPT = "Сдано"
+    STATUS_REJECT = "Не сдано"
+    ADDITIONAL_STATUS_VIEWED = "Просмотрено"
+    ADDITIONAL_STATUS_NOT_VIEWED = "Прокомментировано"
 
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, )
+    laboratory = models.ForeignKey(Laboratory, on_delete=models.PROTECT, )
+    status = models.CharField(max_length=50, null=True, blank=True, default=None, )
+    additional_status = models.CharField(
+        max_length=50, null=True, blank=True, default=None,
+    )
