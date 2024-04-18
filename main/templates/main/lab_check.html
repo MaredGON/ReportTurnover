@@ -14,13 +14,21 @@
 
 {% block Body %}
     <div class="wrapper">
+        {% if result %}
+            <p>
+                Вы успешно проверили лабораторную работу
+            </p>
+        {% endif %}
       <!-- <i class="fa-solid fa-circle-question"></i> -->
-      <p class="info">ФИО студента</p>
+      <p class="info">{{ studentsurname }} {{ studentname }}</p>
       <h2 class="question">Работа зачтена?</h2>
-      <textarea class="textarea" placeholder="Комментарий"></textarea>
-      <div class="btn-group">
-        <button class="yes-btn">Да</button>
-        <button class="no-btn">Нет</button>
-      </div>
+      <form method="post">
+          {% csrf_token %}
+          <textarea class="textarea" placeholder="Комментарий" name="comment"></textarea>
+          <div class="btn-group">
+            <button class="yes-btn" name="status" value="yes">Да</button>
+            <button class="no-btn" name="status" value="no">Нет</button>
+          </div>
+      </form>   
     </div>
 {% endblock %}

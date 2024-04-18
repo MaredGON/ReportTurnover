@@ -1,0 +1,28 @@
+{% extends 'main/layout.html' %}
+
+{% block Body %}
+  <h2>Create Laboratory</h2>
+  <form method="post">
+    {% csrf_token %}
+      {% if error == "You are not authorized" %}
+          <p style="color: red" >
+              {{ error }}
+          </p>
+          <div>
+            <a href="{% url 'authorization' %}"
+            >Please authorization</a>
+          </div>
+      {% endif %}
+      {% if error == "You have chosen a subject that does not meet the requirements of this teacher" %}
+          <p style="color: red" >
+              {{ error }}
+          </p>
+          <div>
+            <a href="{% url 'lab_create' %}"
+            >Try again!</a>
+          </div>
+      {% endif %}  
+    {{ form.as_p }}
+    <button type="submit">Create</button>
+  </form>
+{% endblock %}

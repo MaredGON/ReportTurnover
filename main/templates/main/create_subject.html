@@ -1,0 +1,19 @@
+{% extends 'main/layout.html' %}
+
+{% block Body %}
+  <h2>Create Subject</h2>
+  <form method="post">
+    {% csrf_token %}
+      {% if error %}
+          <p style="color: red" >
+              {{ error }}
+          </p>
+          <div>
+            <a href="{% url 'authorization' %}"
+            >Please authorization</a>
+          </div>
+      {% endif %}
+    {{ form.as_p }}
+    <button type="submit">Create</button>
+  </form>
+{% endblock %}
