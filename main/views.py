@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 
 from .forms import CustomUserCreationForm, SubjectCreationForm, LaboratoryCreationForm
 from .models import CustomUser, Lecturer, Student, LecturerSubject, Laboratory, Laboratory_Status
-from utils import create_laboratory_status_for_students
+from utils import create_laboratory_status_for_students, create_laboratory_status_one_student
 
 def authorization(request: HttpRequest):
     if request.method == 'GET':
@@ -46,7 +46,8 @@ class CreateUserView(LoginRequiredMixin, CreateView):
         user = form.save()
 
         if user.role == CustomUser.ROLE_STUDENT:
-            Student.objects.get_or_create(user=user)
+            student, status = Student.objects.get_or_create(user=user)
+            create_laboratory_status_one_student(student)
         elif user.role == CustomUser.ROLE_LECTURER:
             Lecturer.objects.get_or_create(user=user)
 

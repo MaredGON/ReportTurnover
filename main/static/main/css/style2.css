@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("/static/main/img/fon2.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.wrapper {
+  position: relative;
+  width: 450px;
+  height: 400px;
+  background: #e2e2e2;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+p {
+  font-size: 1.5em;
+  color: #333;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 2.5em;
+  color: #333;
+  /* margin: 10px; */
+}
+
+.btn-group {
+  width: 100%;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+button {
+  position: absolute;
+  width: 140px;
+  height: inherit;
+  font-size: 1.6em;
+  color: #333;
+  font-weight: 600;
+  border-radius: 30px;
+  border: 2px solid #eeeeee;
+  outline: none;
+  cursor: pointer;
+  /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); */
+}
+
+button:nth-child(1) {
+  margin-left: -200px;
+  background: #eeeeee;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button:nth-child(1):hover {
+  background-color: rgb(180, 240, 171);
+}
+
+button:nth-child(1):focus {
+  color: #333333;
+  background-color: rgb(116, 220, 116);
+}
+
+button:nth-child(2) {
+  margin-right: -200px;
+  background: #eeeeee;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button:nth-child(2):hover {
+  background-color: rgb(240, 171, 171);
+}
+
+button:nth-child(2):focus {
+  color: #333333;
+  background-color: rgb(218, 67, 67);
+}
+.textarea {
+  resize: none;
+  background-color: #dddddd;
+  color: #666666;
+  padding: 1em;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  width: 350px;
+  height: 100px;
+  margin: 15px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.textarea:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
+}
+
+.textarea:focus {
+  cursor: text;
+  color: #333333;
+  background-color: white;
+}

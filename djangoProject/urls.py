@@ -24,3 +24,4 @@ urlpatterns = [
     path('', include('main.urls')),
 ]
 
+admin.site.site_header = 'Панель администратора'
