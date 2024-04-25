@@ -53,6 +53,9 @@ class Student(SimpleBaseModel):
     group = models.ForeignKey(EducationalGroup, null=True, blank=True, on_delete=models.SET_NULL)
     chat = models.IntegerField(null=True, blank=True)
 
+    class Meta:
+        verbose_name = "Студенты"
+        verbose_name_plural = "Студенты"
     def __str__(self):
         return f'{self.user.name} {self.user.surname}'
 
