@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
         return self.username
 
     def role_model(self):
-        from educational.models import Student, Lecturer
+        from .models import Student, Lecturer
 
         if self.role == self.ROLE_STUDENT:
             return Student.objects.filter(user=self).first()
