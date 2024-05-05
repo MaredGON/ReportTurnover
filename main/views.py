@@ -8,9 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 
+import asyncio
+
 from .forms import CustomUserCreationForm, SubjectCreationForm, LaboratoryCreationForm
 from .models import CustomUser, Lecturer, Student, LecturerSubject, Laboratory, Laboratory_Status
-from utils import create_laboratory_status_for_students, create_laboratory_status_one_student
+from utils import create_laboratory_status_for_students, create_laboratory_status_one_student, send_notification
 
 def authorization(request: HttpRequest):
     if request.method == 'GET':
@@ -124,8 +126,8 @@ def success_create_user(request):
 def button_laboratory(request: HttpRequest, pk):
     try:
         laboratory_status = Laboratory_Status.objects.get(id=pk)
-        laboratory_status.additional_status = Laboratory_Status.ADDITIONAL_STATUS_VIEWED
         student = laboratory_status.student
+        laboratory_status.additional_status = Laboratory_Status.ADDITIONAL_STATUS_VIEWED
         context = {
             'studentname' : student.user.name,
             'studentsurname': student.user.surname,
@@ -144,7 +146,12 @@ def button_laboratory(request: HttpRequest, pk):
             laboratory_status.status = Laboratory_Status.STATUS_REJECT
         laboratory_status.save()
         context['result'] = True
-
+        chat = student.chat
+        commentt = comment
+        title_name = laboratory_status.laboratory.title
+        statuslab = laboratory_status.status
+        educational = laboratory_status.laboratory.educational
+        asyncio.run(send_notification(chat, commentt, title_name, statuslab, educational))
         return render(request, 'main/lab_check.html', context=context)
 
     except Laboratory_Status.DoesNotExist:
