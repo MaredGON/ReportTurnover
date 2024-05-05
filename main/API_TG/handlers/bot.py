@@ -1,27 +1,24 @@
 #import aiogram
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram import Bot, types, Dispatcher
-from aiogram.utils import executor
+from aiogram import Bot, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from asgiref.sync import sync_to_async
-from django.db import transaction
-from os import getenv
-from sys import exit
 from functools import wraps
 from datetime import datetime
 from main.API_TG.configs.loader import dp, bot
 from main.models import (
     CustomUser,
-    Lecturer,
     Student,
-    LecturerSubject,
-    Laboratory,
     Laboratory_Status,
     EducationalGroup,
-    Subject,
 )
-from utils import AsyncAtomicContext, is_student_register, create_laboratory_status_one_student, generator_qr, get_laboratory_status
+from utils import (
+    AsyncAtomicContext,
+    is_student_register,
+    create_laboratory_status_one_student,
+    generator_qr,
+    get_laboratory_status,
+)
 
 commands = ["/start","/menu","/help"]
 goMenu = ["Главное меню"]
