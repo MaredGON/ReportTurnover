@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+
 
 class SimpleBaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
@@ -7,7 +8,6 @@ class SimpleBaseModel(models.Model):
 
     class Meta:
         abstract = True
-
 
 class EducationalGroup(SimpleBaseModel):
     number = models.CharField(max_length=100, null=True, blank=True, verbose_name="Номер группы")
@@ -21,7 +21,6 @@ class EducationalGroup(SimpleBaseModel):
     def __str__(self):
         return f'{self.number}'
 
-
 class CustomUser(AbstractUser):
     ROLE_STUDENT = "Студент"
     ROLE_LECTURER = "Преподаватель"
@@ -33,7 +32,7 @@ class CustomUser(AbstractUser):
     name = models.CharField(max_length=100, verbose_name="Имя", )
     surname = models.CharField(max_length=100, verbose_name="Фамилия", )
     patronymic = models.CharField(max_length=100, null=True, blank=True, verbose_name="Отчество", )
-    role = models.CharField(max_length=25, choices=ROLE_TYPE,  null=True, )
+    role = models.CharField(max_length=25, choices=ROLE_TYPE, null=True, )
 
     def __str__(self):
         return self.username
@@ -47,7 +46,6 @@ class CustomUser(AbstractUser):
             return Lecturer.objects.filter(user=self).first()
         return
 
-
 class Student(SimpleBaseModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь")
     group = models.ForeignKey(EducationalGroup, null=True, blank=True, on_delete=models.SET_NULL)
@@ -56,9 +54,9 @@ class Student(SimpleBaseModel):
     class Meta:
         verbose_name = "Студенты"
         verbose_name_plural = "Студенты"
+
     def __str__(self):
         return f'{self.user.name} {self.user.surname}'
-
 
 class Lecturer(SimpleBaseModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -66,9 +64,12 @@ class Lecturer(SimpleBaseModel):
     def __str__(self):
         return f"{self.user.name} {self.user.surname}"
 
-
 class Subject(SimpleBaseModel):
     title = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предмет'
 
     def __str__(self):
         return f"{self.title}"
@@ -78,9 +79,16 @@ class LecturerSubject(SimpleBaseModel):
     lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = 'преподаватель'
+        verbose_name_plural = 'преподаватель'
+
+    def __str__(self):
+        return f'{self.subject.title}'
+
 class Laboratory(SimpleBaseModel):
     title = models.CharField(max_length=100, verbose_name='Название')
-    educational = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, verbose_name='Предмет')
+    educational = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, verbose_name='Предмет')
     lecturer = models.ForeignKey(Lecturer, on_delete=models.PROTECT, verbose_name='Преподаватель')
 
     class Meta:
@@ -89,7 +97,6 @@ class Laboratory(SimpleBaseModel):
 
     def __str__(self):
         return f'{self.title}'
-
 
 
 class Laboratory_Status(SimpleBaseModel):
@@ -117,14 +124,15 @@ class Laboratory_Status(SimpleBaseModel):
 
     student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name="Студент")
     laboratory = models.ForeignKey(
-        Laboratory, on_delete=models.PROTECT, verbose_name="Лабораторная работа" )
+        Laboratory, on_delete=models.PROTECT, verbose_name="Лабораторная работа")
     status = models.CharField(
-        max_length=50, null=True, blank=True, choices=STATUS_ACCEPTANCES_CHOICES, default=STATUS_REJECT, verbose_name="Статус сдачи")
+        max_length=50, null=True, blank=True, choices=STATUS_ACCEPTANCES_CHOICES, default=STATUS_REJECT,
+        verbose_name="Статус сдачи")
     additional_status = models.CharField(
         max_length=50, null=True, blank=True, choices=STATUS_VIEWEDS_CHOICES,
         default=ADDITIONAL_STATUS_NOT_VIEWED, verbose_name="Статус просмотра"
     )
-    student_status =models.CharField(
+    student_status = models.CharField(
         max_length=50, null=True, blank=True, choices=STATUS_GENERATED_CHOICES,
         default=STUDENT_STATUS_NOT_GENERATED, verbose_name="Статус студента"
     )
@@ -139,5 +147,3 @@ class Laboratory_Status(SimpleBaseModel):
 
     def __str__(self):
         return f'{self.laboratory}'
-
-

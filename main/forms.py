@@ -30,7 +30,7 @@ class LaboratoryCreationForm(ModelForm):
         fields = ('title', 'educational', 'lecturer')
 
     def save(self, commit=False):
-        subject = super().save(commit=False)
+        lab = super().save(commit=False)
         if commit:
-            subject.save()
-        return subject
+            lab.save()
+        return lab

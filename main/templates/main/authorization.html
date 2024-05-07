@@ -1,4 +1,5 @@
 {% extends 'main/layout.html' %}
+
 {% block Head %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/style1.css'%}"/>
@@ -9,31 +10,37 @@
 {% endblock %}
 
 {% block Body %}
+    
+
     <form method="post">
-    {% csrf_token %}
-    <div class="wrapper">
+        {% csrf_token %}
+        <div class="wrapper">
             {% if error %}
                 <p style="color: red" >
                     {{ error }}
                 </p>
             {% endif %}
-          <form action="authorization.html" method="get">
-            <h1>Вход</h1>
-              <div class="input-box">
-                  <input type="text" placeholder="Логин" id="username" name="username" required />
-                  <i class="bx bxs-lock-alt"></i>
-              </div>  
-            <div class="input-box">
-              <input type="password" placeholder="Пароль" id="password" name="password" required />
-              <i class="bx bxs-lock-alt"></i>
-            </div>
-            <div class="remember-forgot">
-              <label><input type="checkbox" /> Запомнить меня</label>
-              <a href="https://t.me/sqmwg" target="_blank">Забыли пароль? </a>
-            </div>
-            <button type="submit" class="btn btn-success">Войти</button>
-          </form>
-    </div>
-    </form>>
+            {% if result %}
+                <p>
+                    {{ result }}
+                </p>
+            {% endif %}
+            <form action="authorization.html" method="get">
+                <h1>Вход</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Логин" id="username" name="username" required />
+                    <i class="bx bxs-lock-alt"></i>
+                </div>  
+                <div class="input-box">
+                    <input type="password" placeholder="Пароль" id="password" name="password" required />
+                    <i class="bx bxs-lock-alt"></i>
+                </div>
+                <div class="remember-forgot">
+                    <a href="http://192.168.0.104:8000/admin" class="admin-panel-btn">Админ панель</a>
+                    <a href="https://t.me/sqmwg" target="_blank">Забыли пароль? </a>
+                </div>
+                <button type="submit" class="btn btn-success">Войти</button>
+            </form>
+        </div>
+    </form>
 {% endblock %}
-

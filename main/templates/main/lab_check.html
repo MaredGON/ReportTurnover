@@ -15,12 +15,17 @@
 {% block Body %}
     <div class="wrapper">
         {% if result %}
-            <p>
-                Вы успешно проверили лабораторную работу
+            <p class="state-check">
+                Вы успешно проверили лабораторную работу!
             </p>
         {% endif %}
       <!-- <i class="fa-solid fa-circle-question"></i> -->
       <p class="info">{{ studentsurname }} {{ studentname }}</p>
+        {% if comment %}
+            <a href="http://192.168.0.104:8000/admin/main/laboratory_status/{{ pk }}/change/" class="stud-comment">
+                Комментарий студента: {{ comment }}
+            </a>
+        {% endif %}
       <h2 class="question">Работа зачтена?</h2>
       <form method="post">
           {% csrf_token %}
@@ -29,6 +34,9 @@
             <button class="yes-btn" name="status" value="yes">Да</button>
             <button class="no-btn" name="status" value="no">Нет</button>
           </div>
-      </form>   
+      </form>
+        <div class="remember-forgot">
+            <a href="http://192.168.0.104:8000/admin" class="admin-panel-btn">Админ панель</a>
+        </div>
     </div>
 {% endblock %}

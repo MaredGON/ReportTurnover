@@ -68,3 +68,5 @@ async def send_notification(chat, comment, title, status, subject):
                    f"Комментарий - {comment}\n"
                    f"Статус сдачи - {status}\n")
     await bot.send_message(text=textmessage, chat_id=chat)
+
+

@@ -18,14 +18,26 @@ body {
 
 .wrapper {
   position: relative;
-  width: 450px;
-  height: 400px;
+  width: 480px;
+  height: 440px;
   background: #e2e2e2;
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.stud-comment{
+  font-size: 1em; /* Размер текста */
+  color: #333; /* Цвет текста */
+}
+.state-check{
+  font-size: 1.5em; /* Размер текста */
+  color: green; /* Цвет текста */
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 p {
@@ -62,6 +74,7 @@ button {
   cursor: pointer;
   /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); */
 }
+
 
 button:nth-child(1) {
   margin-left: -200px;
@@ -119,4 +132,10 @@ button:nth-child(2):focus {
   cursor: text;
   color: #333333;
   background-color: white;
+}
+.wrapper .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  margin: center;
 }

@@ -28,7 +28,7 @@ goMenu = ["Главное меню"]
 buttonRregister = ["Регистрация"]
 backButton = ["️Назад ⬅️"]
 main_menu_button = ["Меню"]
-mainMenu = ["Генерация","Статистика"]
+mainMenu = ["Генерация","Статус"]
 labs = ["Информатика","Программирование","Дискретная математика"]
 informationLabs = ["#1","#2","#3","#4","#5","Робот"]
 programingLabs = ["#6","#7","#8","#9"]
@@ -306,13 +306,13 @@ async def add_comment_handler(message: types.Message, state: FSMContext):
             current_datetime_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if laboratory_status.student_status == laboratory_status.STUDENT_STATUS_NOT_GENERATED:
                 path_photo = await generator_qr(laboratory_status_id)
-                laboratory_status.student_comment = f"({current_datetime_str}): {message.text}\n\n"
+                laboratory_status.student_comment = f"{current_datetime_str} -> {message.text}\n\n"
                 laboratory_status.student_status = laboratory_status.STUDENT_STATUS_GENERATED
                 with open(path_photo, 'rb') as photo:
                     await message.answer("QR успешно сгенерирован")
                     await bot.send_photo(chat_id=message.chat.id, photo=photo)
             else:
-                laboratory_status.student_comment = f"{laboratory_status.student_comment}({current_datetime_str}): {message.text}\n\n"
+                laboratory_status.student_comment = f"{laboratory_status.student_comment}{current_datetime_str} -> {message.text}\n\n"
                 await message.answer("Данные изменены, воспользуйтесь qr кодом с прошлой генерации")
 
             await sync_to_async(laboratory_status.save)()
