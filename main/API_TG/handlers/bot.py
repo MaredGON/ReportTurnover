@@ -124,7 +124,7 @@ async def startRegister(message: types.Message, state: FSMContext):
         await message.answer("Вам необходимо зарегистрироваться!")
         return
     await register.Groop.set()
-    await message.answer("Введите свою группу", reply_markup=types.ReplyKeyboardRemove())
+    await message.answer("Введите свою группу(цифру). Сейчас доступны - 1, 2 ,3, 4, 5", reply_markup=types.ReplyKeyboardRemove())
 
 @dp.message_handler(state=menu.start)
 async def startMenu(message: types.Message, state: FSMContext):
@@ -158,7 +158,7 @@ async def register_FullName(message: types.Message, state: FSMContext):
         await message.answer("Такой группы нет в базе")
         return
     await state.update_data(group=group)
-    await message.answer("Введите своё ФИО. Убедитесь в правильности написания:")
+    await message.answer("Введите своё ФИО, вида Иванов Иван Иванович. Убедитесь в правильности написания:")
     await register.FullName.set()
 
 @dp.message_handler(state=register.FullName)
@@ -191,7 +191,7 @@ async def register_FullName(message: types.Message, state: FSMContext):
                 await message.answer("Пользователь уже существует и является студентом")
 
     except Exception as e:
-        await message.answer("Не удалось создать студента: " + str(e))
+        await message.answer("Не удалось создать студента. Убедитесь в правильности написания. ФИО должно быть вида Иванов Иван Иванович ")
         return
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*mainMenu)
@@ -220,7 +220,7 @@ async def wait_menu(message: types.Message, state: FSMContext):
         return
     if (message.text == "Генерация"):
         await menu.generate.set()
-    elif (message.text == "Статистика"):
+    elif (message.text == "Статус"):
         await menu.stat.set()
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)

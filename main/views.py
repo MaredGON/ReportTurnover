@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-
+from djangoProject.settings import ALLOWED_HOSTS
 
 from .forms import CustomUserCreationForm, SubjectCreationForm, LaboratoryCreationForm
 from .models import CustomUser, Lecturer, Student, LecturerSubject, Laboratory_Status
@@ -20,10 +20,11 @@ from utils import (
 
 
 def authorization(request: HttpRequest):
+    host = ALLOWED_HOSTS[0]
     if request.method == "GET":
         if request.user.is_authenticated:
             return redirect("/admin/")
-        return render(request, "main/authorization.html")
+        return render(request, "main/authorization.html", {"host":host})
 
     username = request.POST["username"]
     password = request.POST["password"]
@@ -39,14 +40,15 @@ def authorization(request: HttpRequest):
                 request,
                 "main/authorization.html",
                 context={
-                    "result" : "Вы успешно авторизовались"
+                    "result" : "Вы успешно авторизовались",
+                    "host": host,
                 }
             )
     else:
         return render(
             request,
             "main/authorization.html",
-            {"error": "Не верные данные. Попробуйте снова!"},
+            {"error": "Не верные данные. Попробуйте снова!", "host": host},
         )
 
 
@@ -85,11 +87,10 @@ class CreateSubjectView(LoginRequiredMixin, CreateView):
         user = self.request.user
 
         if user.is_authenticated:
-            subject = form.save(commit=False)
+            subject = form.save(commit=True)
             lecturer = Lecturer.objects.get(user=user)
 
             LecturerSubject.objects.get_or_create(lecturer=lecturer, subject=subject)
-
             return response
         else:
             return render(
@@ -143,6 +144,7 @@ def success_create_user(request):
 
 @login_required
 def button_laboratory(request: HttpRequest, pk):
+    host = ALLOWED_HOSTS[0]
     laboratory_status = Laboratory_Status.objects.filter(id=pk).first()
     if not laboratory_status:
         return HttpRequest("Такой лабораторной работы не существует!")
@@ -150,15 +152,17 @@ def button_laboratory(request: HttpRequest, pk):
     student = laboratory_status.student
     laboratory_status.additional_status = Laboratory_Status.ADDITIONAL_STATUS_VIEWED
     comment = laboratory_status.student_comment
-    comment = comment.split("\n\n")[-2].split("->")[1]
-    if len(comment) > 20:
-        comment = comment[:19] + "..."
+    if comment:
+        comment = comment.split("\n\n")[-2].split("->")[1]
+        if len(comment) > 20:
+            comment = comment[:19] + "..."
     context = {
         "studentname": student.user.name,
         "studentsurname": student.user.surname,
         "result": False,
         "pk": pk,
         "comment": comment,
+        "host": host,
     }
 
     if request.method == "GET":

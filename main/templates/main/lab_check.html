@@ -6,10 +6,7 @@
     {% endblock %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/style2.css' %}" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block Body %}
@@ -19,24 +16,32 @@
                 Вы успешно проверили лабораторную работу!
             </p>
         {% endif %}
-      <!-- <i class="fa-solid fa-circle-question"></i> -->
-      <p class="info">{{ studentsurname }} {{ studentname }}</p>
+        <!-- <i class="fa-solid fa-circle-question"></i> -->
+        <p class="info">{{ studentsurname }} {{ studentname }}</p>
         {% if comment %}
             <a href="http://192.168.0.104:8000/admin/main/laboratory_status/{{ pk }}/change/" class="stud-comment">
                 Комментарий студента: {{ comment }}
             </a>
         {% endif %}
-      <h2 class="question">Работа зачтена?</h2>
-      <form method="post">
-          {% csrf_token %}
-          <textarea class="textarea" placeholder="Комментарий" name="comment"></textarea>
-          <div class="btn-group">
-            <button class="yes-btn" name="status" value="yes">Да</button>
-            <button class="no-btn" name="status" value="no">Нет</button>
-          </div>
-      </form>
+        <h2 class="question">Работа зачтена?</h2>
+        <form method="post" id="check-form">
+            {% csrf_token %}
+            <textarea class="textarea" placeholder="Комментарий" name="comment"></textarea>
+            <div class="btn-group">
+                <button id="yes-button" class="yes-btn" name="status" value="yes" {% if result %}disabled{% endif %}>Да</button>
+                <button id="no-button" class="no-btn" name="status" value="no" {% if result %}disabled{% endif %}>Нет</button>
+            </div>
+        </form>
         <div class="remember-forgot">
             <a href="http://192.168.0.104:8000/admin" class="admin-panel-btn">Админ панель</a>
         </div>
     </div>
+    <script>
+        document.getElementById('check-form').addEventListener('submit', function(event) {
+            var buttons = event.target.querySelectorAll('button');
+            buttons.forEach(function(button) {
+                button.disabled = true;
+            });
+        });
+    </script>
 {% endblock %}

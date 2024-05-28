@@ -8,6 +8,7 @@ from aiogram.dispatcher import FSMContext
 import segno
 
 from main.API_TG.configs.loader import bot
+from djangoProject.settings import ALLOWED_HOSTS
 
 
 
@@ -43,7 +44,8 @@ async def is_student_register(chat_id: int) -> bool:
         return False
 
 async def generator_qr(pk):
-    result_string = f'http://192.168.0.104:8000/butlab/{pk}/'
+    host = ALLOWED_HOSTS[0]
+    result_string = f'http://{host}:8000/butlab/{pk}/'
     qrcode = segno.make_qr(result_string)
     path_photo = f"C:\QRIMAGES\qr{pk}.png"
     qrcode.save(path_photo, scale=10)
