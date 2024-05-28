@@ -28,7 +28,7 @@
 2) Далее сделайте клон репозитория в нужную директорию:
 ```
 cd <нужная директория>
-git clone https://github.com/MaredGON/MySi.git
+git clone https://github.com/MaredGON/ReportTurnover.git
 ```
 
 3) Затем установите зависимости:
