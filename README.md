@@ -22,7 +22,7 @@
 - [JS](https://www.javascript.com/)
 - [Bootstrap](https://getbootstrap.com/)
 
-##[Демонстрация](https://disk.yandex.ru/d/Yel5sl_DeR4UcQ)
+## [Демонстрация](https://disk.yandex.ru/d/Yel5sl_DeR4UcQ)
 ## Начало работы
 1) Первым шагом будет установка Python 3.11 и виртуального окружения
 
