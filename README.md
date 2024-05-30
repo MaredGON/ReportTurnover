@@ -40,8 +40,11 @@ pip install -r requirements.txt
 ```
 python manage.py runserver
 ```
-
-5)Запустите телеграм бота:
+5) Создайте своего бота и введите токен в main->API_TG->configs->loader:
+```
+bot_token = "ВАШ ТОКЕН БОТА"
+```
+6) Запустите телеграм бота:
 ```
 python manage.py run_bot
 ```
